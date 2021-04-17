@@ -1,21 +1,35 @@
-import "./NewExpense.css";
+import React, { useState } from "react";
+
 import ExpenseForm from "./ExpenseForm";
+import "./NewExpense.css";
 
 const NewExpense = (props) => {
-  const saveExpenseDataHandler = (data) => {
-    const expenseData = {
-      id: Math.random().toString(),
-      ...data,
-    };
+  const [flag, setFlag] = useState(false);
 
-    props.newExpenseData(expenseData);
+  const saveExpenseDataHandler = (enteredExpenseData) => {
+    const expenseData = {
+      ...enteredExpenseData,
+      id: Math.random().toString(),
+    };
+    props.onAddExpense(expenseData);
   };
 
-  return (
-    <div className="new-expense">
-      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
-    </div>
-  );
+
+  if (!flag) {
+    return (
+      <div className="new-expense">
+        <button className="button" type="button" onClick={() => setFlag(true)}>
+          Add New Expense
+        </button>
+      </div>
+    );
+  } else {
+    return (
+      <div className="new-expense">
+        <ExpenseForm setFlagData={setFlag} onSaveExpenseData={saveExpenseDataHandler} />
+      </div>
+    );
+  }
 };
 
 export default NewExpense;
